@@ -2,7 +2,7 @@ import { parseCryptocurrencyListings } from '~/resources/cryptocurrencies-listin
 import type { CryptocurrencyListing } from '~/resources/cryptocurrencies-listings/types/internal'
 
 export const useSecondHighestCrypto = async () => {
-  const { data: cryptocurrenciesResponse, ...rest } = await useFetch('/api/cryptocurrency-listings', {
+  const { data: cryptocurrencyListingsResponse, ...rest } = await useFetch('/api/cryptocurrency-listings', {
     method: 'GET',
     query: {
       sort: 'market_cap',
@@ -10,12 +10,12 @@ export const useSecondHighestCrypto = async () => {
     },
   })
 
-  if (!cryptocurrenciesResponse.value) return {
+  if (!cryptocurrencyListingsResponse.value) return {
     ...rest,
     data: ref<CryptocurrencyListing | null>(null),
   }
 
-  const parsedCryptocurrencies = parseCryptocurrencyListings(cryptocurrenciesResponse.value)
+  const parsedCryptocurrencies = parseCryptocurrencyListings(cryptocurrencyListingsResponse.value)
 
   const secondHighestCryptocurrency = parsedCryptocurrencies[1] ?? null
 

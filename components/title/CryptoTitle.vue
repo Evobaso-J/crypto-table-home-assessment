@@ -9,8 +9,15 @@ import { useSecondHighestCrypto } from './useSecondHighestCrypto'
 
 defineComponent({ name: 'CryptoTitle' })
 
-const bitcoinValue = await useBitcoinValue()
-const cryptoTitle = computed(() => `Il valore di Bitcoin è ${bitcoinValue}`)
+const convertValueInDollars = (value: number) => Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
+
+const { data: bitcoin } = await useBitcoinValue()
+const cryptoTitle = computed(() => {
+  if (!bitcoin.value || !bitcoin.value.quote.USD) {
+    return 'Non è stato possibile recuperare il valore di Bitcoin'
+  }
+  return `Il valore di Bitcoin è ${convertValueInDollars(bitcoin.value.quote.USD.price)}`
+})
 
 const { data: secondHighestCrypto } = await useSecondHighestCrypto()
 const paragraphText = computed(
@@ -21,8 +28,7 @@ const paragraphText = computed(
     if (!secondHighestCrypto.value.quote.USD) {
       return 'Non è stato possibile recuperare il valore della seconda cryptovaluta con maggior Market Cap'
     }
-    const valueInDollars = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(secondHighestCrypto.value.quote.USD.price)
-    return `La cryptovaluta con maggior Market Cap dopo Bitcoin è ${secondHighestCrypto.value.name} con valore ${valueInDollars}`
+    return `La cryptovaluta con maggior Market Cap dopo Bitcoin è ${secondHighestCrypto.value.name} con valore ${convertValueInDollars(secondHighestCrypto.value.quote.USD.price)}`
   },
 )
 </script>
