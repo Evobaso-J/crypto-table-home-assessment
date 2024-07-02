@@ -8,12 +8,20 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
   },
+
+  modules: ['@nuxt/eslint', 'vuetify-nuxt-module'],
   eslint: {
     config: {
       stylistic: true,
     },
     checker: true,
   },
-
-  modules: ['@nuxt/eslint'],
+  vuetify: {
+    moduleOptions: {
+      /* module specific options */
+    },
+    vuetifyOptions: {
+      /* vuetify options */
+    },
+  },
 })
