@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    cryptoApiKey: '',
+  },
   typescript: {
     typeCheck: true,
   },
