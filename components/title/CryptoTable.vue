@@ -1,34 +1,46 @@
 <template>
-  CryptoTable
   <div
     class="spinner-container-height d-flex justify-center align-center"
   >
     <v-progress-circular
       v-if="status === 'pending'"
       indeterminate
-      color="teal"
+      color="teal-darken-4"
       size="50"
       width="5"
     />
 
     <v-data-table
       v-else
-      :items="cryptoItems"
+      :header-props="{
+        class: 'bg-teal-darken-4 text-uppercase text-overline',
+      }"
+      :headers
+      :items
       hide-default-footer
-    />
+      class="rounded-lg"
+      items-per-page="100"
+    >
+      <template #[`item.name`]="{ item }">
+        <div class="font-weight-bold">
+          {{ item.name }}
+        </div>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
 <script setup lang='ts'>
 import { parseCryptocurrencyListings } from '~/resources/cryptocurrencies-listings/parse'
+import { convertISOStringToReadableDate, convertValueInDollars } from '~/utils'
 
 defineComponent({ name: 'CryptoTable' })
 
 type CryptocurrenciesTableItems = {
   name: string
   symbol: string
-  price: number
-  circulatingSupply: number
+  price: string
+  circulatingSupply: string
   lastUpdated: string
 }
 
@@ -40,16 +52,25 @@ const { data: cryptoListingsResponse, status } = useFetch('/api/cryptocurrency-l
   },
   server: false,
 })
-const cryptoItems = computed<CryptocurrenciesTableItems[]>(() => {
+
+const headers = [
+  { title: 'Name', value: 'name' },
+  { title: 'Symbol', value: 'symbol' },
+  { title: 'Price', value: 'price' },
+  { title: 'Circulating Supply', value: 'circulatingSupply' },
+  { title: 'Last Updated', value: 'lastUpdated' },
+] as const satisfies { title: string, value: keyof CryptocurrenciesTableItems }[]
+
+const items = computed<CryptocurrenciesTableItems[]>(() => {
   if (status.value === 'pending') return []
   if (!cryptoListingsResponse.value) return []
   const cryptoListings = parseCryptocurrencyListings(cryptoListingsResponse.value)
   return cryptoListings.map(crypto => ({
     name: crypto.name,
     symbol: crypto.symbol,
-    price: crypto.quote.USD?.price ?? 0,
-    circulatingSupply: crypto.circulating_supply,
-    lastUpdated: crypto.last_updated,
+    price: convertValueInDollars(crypto.quote.USD?.price ?? 0),
+    circulatingSupply: Math.floor(crypto.circulating_supply).toLocaleString(),
+    lastUpdated: convertISOStringToReadableDate(crypto.last_updated),
   }))
 })
 </script>

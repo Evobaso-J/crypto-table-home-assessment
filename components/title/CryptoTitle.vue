@@ -6,10 +6,9 @@
 <script setup lang="ts">
 import { useBitcoinValue } from './useBitcoinValue'
 import { useSecondHighestCrypto } from './useSecondHighestCrypto'
+import { convertValueInDollars } from '~/utils'
 
 defineComponent({ name: 'CryptoTitle' })
-
-const convertValueInDollars = (value: number) => Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
 
 const { data: bitcoin } = await useBitcoinValue()
 const cryptoTitle = computed(() => {
