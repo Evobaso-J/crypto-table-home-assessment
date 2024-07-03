@@ -31,6 +31,10 @@ pnpm dev
 
 ## Production
 
+You can see the production website deployed on netlify [by clicking here](https://main--incredible-parfait-cd0711.netlify.app/).
+
+If you want to see the production build locally, you can do so by following the steps below.
+
 Build the application for production:
 
 ```bash
@@ -43,4 +47,3 @@ Locally preview production build:
 pnpm preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
