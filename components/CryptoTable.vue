@@ -1,33 +1,34 @@
 <template>
   <div
+    v-if="status === 'pending'"
+
     class="spinner-container-height d-flex justify-center align-center"
   >
     <v-progress-circular
-      v-if="status === 'pending'"
       indeterminate
       color="teal-darken-4"
       size="50"
       width="5"
     />
-
-    <v-data-table
-      v-else
-      :header-props="{
-        class: 'bg-teal-darken-4 text-uppercase text-overline',
-      }"
-      :headers
-      :items
-      hide-default-footer
-      class="rounded-lg"
-      items-per-page="100"
-    >
-      <template #[`item.name`]="{ item }">
-        <div class="font-weight-bold">
-          {{ item.name }}
-        </div>
-      </template>
-    </v-data-table>
   </div>
+
+  <v-data-table
+    v-else
+    :header-props="{
+      class: 'bg-teal-darken-4 text-uppercase text-overline',
+    }"
+    :headers
+    :items
+    hide-default-footer
+    class="rounded-lg"
+    items-per-page="100"
+  >
+    <template #[`item.name`]="{ item }">
+      <div class="font-weight-bold">
+        {{ item.name }}
+      </div>
+    </template>
+  </v-data-table>
 </template>
 
 <script setup lang='ts'>
