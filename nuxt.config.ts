@@ -14,7 +14,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
-  modules: ['@nuxt/eslint',
+  modules: [
+    '@nuxt/test-utils/module',
+    '@nuxt/eslint',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error required to install vuetify on nuxt https://vuetifyjs.com/en/getting-started/installation/#using-nuxt-3
