@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { convertValueInDollars, convertISOStringToReadableDate } from '..'
+import { convertValueInDollars, convertISOStringToReadableDate, roundToDecimals } from '..'
 
 describe('utils', () => {
   describe('convertValueInDollars', () => {
@@ -44,6 +44,32 @@ describe('utils', () => {
 
     it('should correctly pad single-digit minutes to maintain the MM format', () => {
       expect(convertISOStringToReadableDate('2023-06-05T12:05:00.000Z')).toEqual('Monday 5 June, 12:05 PM')
+    })
+  })
+
+  describe('roundToDecimals', () => {
+    it('should round a number to 2 decimal places', () => {
+      expect(roundToDecimals(3.14159, 2)).toBe(3.14)
+    })
+
+    it('should round a number to 0 decimal places', () => {
+      expect(roundToDecimals(3.5, 0)).toBe(4)
+    })
+
+    it('should handle rounding for negative numbers', () => {
+      expect(roundToDecimals(-3.14159, 2)).toBe(-3.14)
+    })
+
+    it('should return the same number if decimals is 0 and no rounding is needed', () => {
+      expect(roundToDecimals(5, 0)).toBe(5)
+    })
+
+    it('should handle rounding to more decimal places than the number has', () => {
+      expect(roundToDecimals(3.1, 5)).toBe(3.1)
+    })
+
+    it('should correctly round numbers that are halfway between two intervals', () => {
+      expect(roundToDecimals(2.675, 2)).toBe(2.68)
     })
   })
 })

@@ -28,3 +28,8 @@ export const convertISOStringToReadableDate = (dateString: string) => {
 
   return `${weekday} ${day} ${month}, ${hour}:${minute} ${ampm}`
 }
+
+export const roundToDecimals = (value: number, decimals: number) => {
+  const factor = 10 ** decimals
+  return Math.round(value * factor) / factor
+}
