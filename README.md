@@ -4,20 +4,21 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
-Make sure to install the dependencies:
+Copy the `.env.example` file to `.env` and add the NUXT_CRYPTO_API_KEY
 
 ```bash
-# npm
-npm install
+cp .env.example .env
+```
 
-# pnpm
-pnpm install
 
-# yarn
-yarn install
+Make sure to install the dependencies through pnpm. 
+Use corepack to enable the right version of pnpm.
 
-# bun
-bun install
+More information about corepack can be found [in this article](https://www.totaltypescript.com/how-to-use-corepack)
+
+Then run the following:
+```bash
+pnpm i
 ```
 
 ## Development Server
@@ -25,17 +26,7 @@ bun install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+pnpm dev
 ```
 
 ## Production
@@ -43,33 +34,13 @@ bun run dev
 Build the application for production:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+pnpm build
 ```
 
 Locally preview production build:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+pnpm preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
