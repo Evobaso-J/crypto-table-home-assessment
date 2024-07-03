@@ -14,6 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import CryptoTable from '~/components/title/CryptoTable.vue'
+import CryptoTable from '~/components/CryptoTable.vue'
 import CryptoTitle from '~/components/title/CryptoTitle.vue'
 </script>
