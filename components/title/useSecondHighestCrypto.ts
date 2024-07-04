@@ -8,6 +8,7 @@ export const useSecondHighestCrypto = async () => {
       sort: 'market_cap',
       sort_dir: 'desc',
     },
+    lazy: true,
   })
 
   if (!cryptocurrencyListingsResponse.value) return {

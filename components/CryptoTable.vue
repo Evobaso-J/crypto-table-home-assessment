@@ -1,39 +1,43 @@
 <template>
-  <div
-    v-if="status === 'pending'"
+  <KeepAlive>
+    <div
+      v-if="status === 'pending'"
 
-    class="spinner-container-height d-flex justify-center align-center"
-  >
-    <v-progress-circular
-      indeterminate
-      color="teal-darken-4"
-      size="50"
-      width="5"
-    />
-  </div>
+      class="spinner-container-height d-flex justify-center align-center"
+    >
+      <v-progress-circular
+        indeterminate
+        color="teal-darken-4"
+        size="50"
+        width="5"
+      />
+    </div>
 
-  <v-data-table
-    v-else
-    :header-props="{
-      class: 'bg-teal-darken-4 text-uppercase text-overline',
-    }"
-    :headers
-    :items
-    hide-default-footer
-    class="rounded-lg"
-    items-per-page="100"
-  >
-    <template #[`item.name`]="{ item }">
-      <div class="font-weight-bold">
-        {{ item.name }}
-      </div>
-    </template>
-  </v-data-table>
+    <v-data-table
+      v-else
+      :header-props="{
+        class: 'bg-teal-darken-4 text-uppercase text-overline',
+      }"
+      :headers
+      :items
+      hide-default-footer
+      class="rounded-lg"
+      items-per-page="100"
+    >
+      <template #[`item.name`]="{ item }">
+        <div class="font-weight-bold">
+          {{ item.name }}
+        </div>
+      </template>
+    </v-data-table>
+  </KeepAlive>
 </template>
 
 <script setup lang='ts'>
 import { parseCryptocurrencyListings } from '~/resources/cryptocurrencies-listings/parse'
+import type { CryptocurrencyListingResponse } from '~/resources/cryptocurrencies-listings/types/response'
 import { convertISOStringToReadableDate, convertValueInDollars } from '~/utils'
+import { useFetchCache } from '~/utils/useFetchCache'
 
 defineComponent({ name: 'CryptoTable' })
 
@@ -45,6 +49,7 @@ type CryptocurrenciesTableItems = {
   lastUpdated: string
 }
 
+const { getCachedData, transform } = useFetchCache<CryptocurrencyListingResponse>()
 const { data: cryptoListingsResponse, status } = useFetch('/api/cryptocurrency-listings', {
   method: 'GET',
   query: {
@@ -52,6 +57,9 @@ const { data: cryptoListingsResponse, status } = useFetch('/api/cryptocurrency-l
     sort_dir: 'desc',
   },
   server: false,
+  lazy: true,
+  transform,
+  getCachedData,
 })
 
 const headers = [
@@ -65,7 +73,9 @@ const headers = [
 const items = computed<CryptocurrenciesTableItems[]>(() => {
   if (status.value === 'pending') return []
   if (!cryptoListingsResponse.value) return []
-  const cryptoListings = parseCryptocurrencyListings(cryptoListingsResponse.value)
+
+  const { fetchedAt: _, ...cryptoListingsNoFetchedAt } = cryptoListingsResponse.value
+  const cryptoListings = parseCryptocurrencyListings(cryptoListingsNoFetchedAt)
   return cryptoListings.map(crypto => ({
     name: crypto.name,
     symbol: crypto.symbol,

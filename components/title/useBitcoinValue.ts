@@ -23,6 +23,7 @@ export const useBitcoinValue = async () => {
     query: {
       slug: 'bitcoin',
     },
+    lazy: true,
   })
 
   if (!cryptocurrencyQuotesResponse.value) return {

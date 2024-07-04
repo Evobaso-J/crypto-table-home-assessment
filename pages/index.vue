@@ -5,6 +5,11 @@
         <CryptoTitle />
       </v-col>
       <v-col cols="12">
+        <NuxtLink
+          to="cache-test"
+        >Clicca qui per testare il caching</NuxtLink>
+      </v-col>
+      <v-col cols="12">
         <ClientOnly>
           <CryptoTable />
         </ClientOnly>
