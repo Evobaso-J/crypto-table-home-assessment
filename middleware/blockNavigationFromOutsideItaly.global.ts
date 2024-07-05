@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(() => {
       fields: 'countryCode',
     },
   })
-  if (data.value !== 'IT') {
+  if (data.value !== 'SE') {
     return abortNavigation('Devi essere in Italia per accedere a questa pagina')
   }
 })
